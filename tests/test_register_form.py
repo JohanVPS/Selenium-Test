@@ -166,7 +166,15 @@ class TestRegisterForm:
         
         assert self.verificar_botao_habilitado(driver)
         botao = driver.find_element(By.XPATH, "//button[@type='submit']")
-        botao.click()
+        
+        # Rola até o botão ficar visível
+        driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", botao)
+        time.sleep(1)  # Espera para a rolagem ser concluída
+        
+        # Usa Wait para garantir que o botão esteja clicável
+        WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//button[@type='submit']"))
+        ).click()
         
         time.sleep(2)
         
